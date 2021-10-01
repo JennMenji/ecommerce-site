@@ -34,6 +34,8 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  console.log(req.params.id);
+
   Product.findOne({
     where: {
       id: req.params.id,
@@ -51,7 +53,12 @@ router.get("/:id", (req, res) => {
         attributes: ["tag_name"],
       },
     ],
-  });
+  })
+    .then((dbProductData) => res.json(dbProductData))
+    .catch((err) => {
+      console.log(err);
+      res.status.json(500).json(err);
+    });
 });
 
 // create new product
